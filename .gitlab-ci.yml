@@ -1,0 +1,165 @@
+image: node:18
+
+stages:
+  - prepare
+  - test
+  - security
+  - build
+  - deploy
+  - monitor
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  NODE_OPTIONS: --max-old-space-size=4096
+
+services:
+  - docker:dind
+
+# Global cache configuration
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .yarn-cache/
+    - dist/
+  policy: pull-push
+
+# Install dependencies
+prepare:
+  stage: prepare
+  script:
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+
+# Test stage with parallel jobs
+test:unit:
+  stage: test
+  script:
+    - npm run test:unit
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    reports:
+      coverage: coverage/lcov-report/index.html
+    expire_in: 1 week
+
+test:integration:
+  stage: test
+  script:
+    - npm run test:integration
+  allow_failure: true
+
+test:e2e:
+  stage: test
+  script:
+    - npm run test:e2e
+  allow_failure: true
+
+lint:
+  stage: test
+  script:
+    - npm run lint
+    - npm run type-check
+
+# Security checks
+security:
+  stage: security
+  script:
+    - npm audit
+    - npm run scan:dependencies
+  allow_failure: true
+  only:
+    - main
+    - test
+    - dev
+
+# Build stage with different configurations
+build:
+  stage: build
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+        npm run build:prod
+      elif [[ "$CI_COMMIT_BRANCH" == "test" ]]; then
+        npm run build:test
+      else
+        npm run build:dev
+      fi
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+  only:
+    - main
+    - test
+    - dev
+
+# Deployment stages
+.deploy_template: &deploy_template
+  before_script:
+    - apt-get update && apt-get install -y python3-pip
+    - pip3 install awscli
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set region $AWS_DEFAULT_REGION
+
+deploy_dev:
+  <<: *deploy_template
+  stage: deploy
+  variables:
+    S3_BUCKET: $AWS_S3_BUCKET_DEV
+    CLOUDFRONT_ID: $AWS_CLOUDFRONT_ID_DEV
+  script:
+    - aws s3 sync dist/ s3://$S3_BUCKET/ --delete
+    - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_ID --paths "/*"
+  environment:
+    name: development
+    url: https://dev.your-domain.com
+  only:
+    - dev
+
+deploy_test:
+  <<: *deploy_template
+  stage: deploy
+  variables:
+    S3_BUCKET: $AWS_S3_BUCKET_TEST
+    CLOUDFRONT_ID: $AWS_CLOUDFRONT_ID_TEST
+  script:
+    - aws s3 sync dist/ s3://$S3_BUCKET/ --delete
+    - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_ID --paths "/*"
+  environment:
+    name: test
+    url: https://test.your-domain.com
+  only:
+    - test
+
+deploy_prod:
+  <<: *deploy_template
+  stage: deploy
+  variables:
+    S3_BUCKET: $AWS_S3_BUCKET_PROD
+    CLOUDFRONT_ID: $AWS_CLOUDFRONT_ID_PROD
+  script:
+    - aws s3 sync dist/ s3://$S3_BUCKET/ --delete
+    - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_ID --paths "/*"
+  environment:
+    name: production
+    url: https://your-domain.com
+  only:
+    - main
+  when: manual
+  allow_failure: false
+
+# Monitoring
+monitor:
+  stage: monitor
+  script:
+    - curl -X POST $MONITORING_WEBHOOK -H "Content-Type: application/json" -d "{\"deployment\":\"$CI_ENVIRONMENT_NAME\",\"status\":\"success\"}"
+  when: on_success
+  only:
+    - main
+    - test
+    - dev 

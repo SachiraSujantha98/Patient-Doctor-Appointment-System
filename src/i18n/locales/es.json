@@ -1,0 +1,97 @@
+{
+  "app": {
+    "name": "App Médica"
+  },
+  "navigation": {
+    "dashboard": "Panel Principal",
+    "appointments": "Citas",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Entrar",
+      "googleLogin": "Iniciar sesión con Google",
+      "noAccount": "¿No tienes una cuenta?",
+      "register": "Regístrate aquí"
+    },
+    "register": {
+      "title": "Registro",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "role": "Rol",
+      "specialization": "Especialización",
+      "submit": "Registrarse",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "login": "Inicia sesión aquí"
+    }
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido, {{name}}!",
+    "doctorDescription": "Gestiona tus citas y registros de pacientes",
+    "patientDescription": "Reserva citas y consulta tu historial médico",
+    "appointments": {
+      "upcoming": "Próximas Citas",
+      "past": "Citas Pasadas",
+      "book": "Reservar Cita",
+      "noAppointments": "No se encontraron citas",
+      "status": {
+        "pending": "Pendiente",
+        "accepted": "Aceptada",
+        "completed": "Completada",
+        "cancelled": "Cancelada"
+      },
+      "actions": {
+        "view": "Ver Detalles",
+        "manage": "Gestionar",
+        "book": "Reservar Ahora",
+        "cancel": "Cancelar"
+      }
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "personalInfo": "Información Personal",
+    "preferences": "Preferencias",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "specialization": "Especialización",
+    "emailNotifications": "Notificaciones por correo",
+    "saveChanges": "Guardar Cambios",
+    "updateSuccess": "Perfil actualizado exitosamente",
+    "updateError": "Error al actualizar el perfil"
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "email": "Correo electrónico inválido",
+    "min": "Debe tener al menos {{min}} caracteres",
+    "max": "Debe tener como máximo {{max}} caracteres",
+    "passwordMatch": "Las contraseñas deben coincidir"
+  },
+  "error": {
+    "title": "¡Ups! Algo salió mal",
+    "message": "Encontramos un error al procesar tu solicitud",
+    "retry": "Intentar de nuevo"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "success": "¡Éxito!",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "doctor": "Doctor",
+    "patient": "Paciente",
+    "date": "Fecha",
+    "time": "Hora",
+    "status": "Estado",
+    "actions": "Acciones"
+  }
+} 

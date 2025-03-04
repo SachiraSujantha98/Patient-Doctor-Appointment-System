@@ -1,0 +1,79 @@
+{
+  "app": {
+    "name": "Medical App"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "appointments": "Appointments",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "googleLogin": "Sign in with Google",
+      "noAccount": "Don't have an account?",
+      "register": "Register"
+    },
+    "register": {
+      "title": "Create Account",
+      "email": "Email",
+      "password": "Password",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "role": "Role",
+      "specialization": "Specialization",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "login": "Sign In"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}!",
+    "patientTitle": "Patient Dashboard",
+    "doctorTitle": "Doctor Dashboard",
+    "appointments": {
+      "upcoming": "Upcoming Appointments",
+      "past": "Past Appointments",
+      "book": "Book Appointment",
+      "noAppointments": "No appointments found"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "preferences": "Preferences",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "specialization": "Specialization",
+    "emailNotifications": "Email Notifications",
+    "saveChanges": "Save Changes",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Invalid email address",
+    "min": "Must be at least {{min}} characters",
+    "max": "Must be at most {{max}} characters",
+    "passwordMatch": "Passwords must match"
+  },
+  "error": {
+    "title": "Oops! Something went wrong",
+    "message": "We encountered an error while processing your request",
+    "retry": "Try Again"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success!",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit"
+  }
+} 
